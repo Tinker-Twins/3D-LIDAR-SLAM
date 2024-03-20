@@ -2,10 +2,12 @@
 <?xml-model href="http://download.ros.org/schema/package_format3.xsd" schematypens="http://www.w3.org/2001/XMLSchema"?>
 <package format="3">
   <name>ndt_omp</name>
-  <version>0.0.0</version>
+  <version>0.1.0</version>
   <description>OpenMP boosted NDT and GICP algorithms</description>
 
-  <maintainer email="koide@aisl.cs.tut.ac.jp">koide</maintainer>
+  <maintainer email="csamak@clemson.edu">Chinmay Samak</maintainer>
+  <maintainer email="tsamak@clemson.edu">Tanmay Samak</maintainer>
+  <maintainer email="koide@aisl.cs.tut.ac.jp">Kenji Koide</maintainer>  
 
   <license>BSD</license>
 
@@ -21,4 +23,5 @@
     <build_type condition="$ROS_VERSION == 1">catkin</build_type>
     <build_type condition="$ROS_VERSION == 2">ament_cmake</build_type>
   </export>
+  
 </package>

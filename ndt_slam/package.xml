@@ -1,12 +1,14 @@
 <?xml version="1.0"?>
 <package format="2">
   <name>ndt_slam</name>
-  <version>0.0.0</version>
-  <description>The ndt_slam package</description>
+  <version>0.1.0</version>
+  <description>NDT SLAM algorithm</description>
 
-  <maintainer email="rottertarmenation.y11.r18@gmail.com">RyuYamamoto</maintainer>
+  <maintainer email="csamak@clemson.edu">Chinmay Samak</maintainer>
+  <maintainer email="tsamak@clemson.edu">Tanmay Samak</maintainer>
+  <maintainer email="rottertarmenation.y11.r18@gmail.com">Ryu Yamamoto</maintainer>
 
-  <license>TODO</license>
+  <license>BSD</license>
 
   <buildtool_depend>catkin</buildtool_depend>
   <build_depend>geometry_msgs</build_depend>
@@ -24,10 +26,7 @@
   <exec_depend>tf</exec_depend>
   <exec_depend>ndt_omp</exec_depend>
 
-
-  <!-- The export tag contains other, unspecified, tags -->
   <export>
-    <!-- Other tools can request additional information be placed here -->
-
   </export>
+
 </package>
