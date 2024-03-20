@@ -1,28 +1,27 @@
 # ndt_slam
 
 ## Dependencies
-```
+```bash
 sudo apt install ros-$ROS_DISTRO-tf2-sensor-msgs
 sudo apt install ros-$ROS_DISTRO-jsk-rviz-plugins
 ```
 
 ## Setup
-```
-mkdir -p ~/catkin_ws/src && cd ~/catkin_ws/src
-git clone https://github.com/RyuYamamoto/ndt_slam
-cd .. && catkin_make
+```bash
+cd ROS1_Workspace && catkin_make
 ```
 
-## Execute
-```
+## Execution
+Open a terminal and launch `ndt_slam`.
+```bash
 roslaunch ndt_slam ndt_slam.launch
 ```
-open other terminal
-```
+Open another terminal and play a pre-recorded `rosbag` or start streming data from sensor.
+```bash
 rosparam set use_sim_time true
-rosbag play --clock <ROSBAG PATH>
+rosbag play --clock <ROSBAG_PATH>
 ```
-open other terminal
-```
+Open another terminal and call a service to save a PCD map of desired resolution to desired path.
+```bash
 rosservice call /ndt_slam_node/save_map 0.1 ~/map.pcd
 ```

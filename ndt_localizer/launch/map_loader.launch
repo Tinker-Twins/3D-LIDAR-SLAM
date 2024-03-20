@@ -1,7 +1,7 @@
 <launch>
     
     <!-- Simulation or Real Time -->
-    <!-- <param name="/use_sim_time" default="false" /> -->
+    <!-- <param name="/use_sim_time" default="true" /> -->
 
     <!-- Map Loader Arguments -->
     <arg name="roll" default="0.0" />
@@ -10,7 +10,7 @@
     <arg name="x" default="0.0" />
     <arg name="y" default="0.0" />
     <arg name="z" default="0.0" />
-    <arg name="pcd_path"  default="$(find ndt_localizer)/map/cuicar_armlab_terrace.pcd"/>
+    <arg name="pcd_path"  default="$(find ndt_localizer)/maps/cuicar_terrace.pcd" />
     <arg name="map_topic" default="/points_map"/>
 
     <!-- Map Loader Node -->

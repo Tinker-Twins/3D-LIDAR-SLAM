@@ -10,7 +10,7 @@
 ros::Publisher filtered_points_pub;
 
 // Leaf size of VoxelGrid filter
-static double voxel_leaf_size = 2.0;
+static double voxel_leaf_size = 0.5;
 
 static bool _output_log = false;
 static std::ofstream ofs;
@@ -85,7 +85,7 @@ int main(int argc, char** argv)
   private_nh.getParam("points_topic", POINTS_TOPIC);
   private_nh.getParam("output_log", _output_log);
 
-  private_nh.param<double>("leaf_size", voxel_leaf_size, 2.0);
+  private_nh.param<double>("leaf_size", voxel_leaf_size, 0.5);
   ROS_INFO_STREAM("Voxel leaf size is: "<<voxel_leaf_size);
   if(_output_log == true){
 	  char buffer[80];

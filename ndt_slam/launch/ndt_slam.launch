@@ -1,7 +1,7 @@
 <launch>
-  <arg name="input_sensor_topic" default="/velodyne_points"/>
-  <arg name="input_odom_topic" default="odom"/>
-  <arg name="input_imu_topic" default="/dvs/imu"/>
+  <arg name="input_sensor_topic" default="/points_raw"/>
+  <arg name="input_odom_topic" default="/odom"/>
+  <arg name="input_imu_topic" default="/imu"/>
 
   <arg name="base_frame_id" default="base_link"/>
   <arg name="min_scan_range" default="5.0"/>

@@ -1,146 +1,58 @@
-## ndt_localizer
+# ndt_localizer
 
-This repo modified from Autoware lidar_localizer module. Unlike the module in Autoware with haveily dependency on a lot of packages(you need compile all the packages in Autoware project), this repo is clean, simple and with no dependencies. All you need is ROS, and a pcd file(the point cloud map).
-
-## How to use
-
-### Prepare you pcd map and rosbag
-
-Put the pcd data to the map folder:
-
+## Setup
 ```bash
-cp map.pcd map/
+cd ROS1_Workspace && catkin_make
 ```
 
-### Build in your ros workspace
-clone this repo in your `ros workspace/src/`, and then `catkin_make` (or `catkin build`):
+## Configuration
+
+### `map_loader.launch`
+Modify the `pcd_path` in `map_loader.launch` to point to the desired PCD map:
+```xml
+<arg name="pcd_path"  default="$(find ndt_localizer)/map/map.pcd"/>
+```
+
+### `voxel_grid_filter.launch`
+Configure the LIDAR pointcloud topic in `voxel_grid_filter.launch`:
+```xml
+<arg name="points_topic" default="/velodyne_points" />
+```
+
+If your LIDAR data is sparse (e.g. VLP-16), set smaller `leaf_size` in `voxel_grid_filter.launch` like 1.0. If your LIDAR pointcloud is dense (e.g. VLP-32, Hesai Pander40P, HDL-64, etc.), set `leaf_size` between 2.0 and 3.0.
+
+### `static_tf.launch`
+
+Configure the `base_link_to_localizer` transform with the correct `frame id` for your LIDAR:
+```xml
+<node pkg="tf2_ros" type="static_transform_publisher" name="base_link_to_localizer" args="0 0 0 0 0 0 base_link velodyne"/>
+```
+
+### `ndt_localizer.launch`
+Configure the main parameters for NDT algorithm in `ndt_localizer.launch`:
+```xml
+<arg name="trans_epsilon" default="0.05" />
+<arg name="step_size" default="0.1" />
+<arg name="resolution" default="2.0" />
+<arg name="max_iterations" default="30.0" />
+<arg name="converged_param_transform_probability" default="3.0" />
+```
+These default params work nice with 16, 32 and 64 channel LIDARs.
+
+## Execution
+> **Note:** Move the PCD map to the `map` drectory before execution
+
+Open a terminal and launch `ndt_localizer`.
 ```bash
-cd catkin_ws/src/
-git clone https://github.com/AbangLZU/ndt_localizer.git
-cd ..
-catkin_make
-```
-
-### Setup configuration
-
-#### Config map loader
-Move your map pcd file (.pcd) to the map folder inside this project (`ndt_localizer/map`), change the pcd_path in `map_loader.launch` to you pcd path, for example:
-
-```xml
-<arg name="pcd_path"  default="$(find ndt_localizer)/map/kaist02.pcd"/>
-```
-#### Config point cloud downsample
-
-Config your Lidar point cloud topic in `launch/points_downsample.launch`:
-
-```xml
-<arg name="points_topic" default="/os1_points" />
-```
-
-If your Lidar data is sparse (like VLP-16), you need to config smaller `leaf_size` in `launch/points_downsample.launch` like `2.0`. If your lidar point cloud is dense (VLP-32, Hesai Pander40P, HDL-64 ect.), keep `leaf_size` as `3.0`。
-
-#### Config static tf
-
-There are two static transform in this project: `base_link_to_localizer` and `world_to_map`，replace the `ouster` with your lidar frame id if you are using a different lidar:
-
-```xml
-<node pkg="tf2_ros" type="static_transform_publisher" name="base_link_to_localizer" args="0 0 0 0 0 0 base_link ouster"/>
-```
-
-#### Config ndt localizer
-You can config NDT params in `ndt_localizer.launch`. Tha main params of NDT algorithm is:
-
-```xml
-<arg name="trans_epsilon" default="0.05" doc="The maximum difference between two consecutive transformations in order to consider convergence" />
-<arg name="step_size" default="0.1" doc="The newton line search maximum step length" />
-<arg name="resolution" default="2.0" doc="The ND voxel grid resolution" />
-<arg name="max_iterations" default="30.0" doc="The number of iterations required to calculate alignment" />
-<arg name="converged_param_transform_probability" default="3.0" doc="" />
-```
-
-These default params work nice with 64 and 32 lidar.
-
-### Run the localizer
-Once you get your pcd map and configuration ready, run the localizer with:
-
-
-```bash
-# open a roscore
-roscore
-# in other terminal
-cd catkin_ws
-source devel/setup.bash
-# use rosbag sim time if you are playing a rosbag!!!
-rosparam set use_sim_time true
-# launch the ndt_localizer node
 roslaunch ndt_localizer ndt_localizer.launch
 ```
 
-wait a few seconds for loading map, then you can see your pcd map in rviz like this:
+Wait a few seconds for the PCD map to load. Then, give an initial pose of vehicle with `2D Pose Estimate` in `RViz`. This operation will send a reference initial pose to topic `/initialpose`.
 
-![](cfgs/sample_img_1.png)
-
-give a init pose of current vehicle with 2D Pose Estimate in the rviz:
-
-![](cfgs/sample_img3.png)
-
-
-This operation will send a init pose to topic `/initialpose`.
-
-play the rosbag:
-
+Open another terminal and play a pre-recorded `rosbag` or start streming data from sensor.
 ```bash
-rosbag play KAIST02-small.bag --clock
+rosparam set use_sim_time true
+rosbag play --clock <ROSBAG_PATH>
 ```
 
-Then you will see the localization result:
-
-![](cfgs/sample_img2.png)
-
-The final localization msg will send to `/ndt_pose` topic:
-
-```proto
----
-header: 
-  seq: 1867
-  stamp: 
-    secs: 1566536121
-    nsecs: 251423898
-  frame_id: "map"
-pose: 
-  position: 
-    x: -94.8022766113
-    y: 544.097351074
-    z: 42.5747337341
-  orientation: 
-    x: 0.0243843578881
-    y: 0.0533175268768
-    z: -0.702325920272
-    w: 0.709437048124
----
-```
-
-The localizer also publish a tf of `base_link` to `map`:
-
-```
----
-transforms: 
-  - 
-    header: 
-      seq: 0
-      stamp: 
-        secs: 1566536121
-        nsecs: 251423898
-      frame_id: "map"
-    child_frame_id: "base_link"
-    transform: 
-      translation: 
-        x: -94.8022766113
-        y: 544.097351074
-        z: 42.5747337341
-      rotation: 
-        x: 0.0243843578881
-        y: 0.0533175268768
-        z: -0.702325920272
-        w: 0.709437048124
-```
+The localizer updates estimated pose on `/ndt_pose` topic. The localizer also publishs a tf from `base_link` to `map`.
