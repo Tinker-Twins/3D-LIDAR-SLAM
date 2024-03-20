@@ -1,3 +1,3 @@
-# 3D LIDAR Mapping Localization
+# 3D LIDAR SLAM
 
-ROS Packages for Real-Time 3D LIDAR Based Mapping and Localization using Normal Distribution Transform (NDT) Scan Matching
+ROS Packages for Real-Time 3D LIDAR Based Simultaneous Localization and Mapping (SLAM) using Normal Distribution Transform (NDT) Scan Matching Algorithm.
