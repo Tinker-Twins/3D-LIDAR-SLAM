@@ -1,9 +1,8 @@
 # ndt_omp
 
 ![ndt_omp](data/ndt_omp.png)
-<span style="color:limegreen">Source PCD</span> |
-<span style="color:red">Target PCD</span> |
-<span style="color:blue">Aligned PCD</span>
+
+$${\mathrm{\color{limegreen}{Source \space PCD} \space \color{black}{|} \space \color{red}{Target \space PCD} \space \color{black}{|} \space \color{blue}{Aligned \space PCD}}}$$
 
 This package provides an OpenMP-boosted Normal Distributions Transform (and GICP) algorithm derived from `pcl`. The `NDT` algorithm is modified to be SSE-friendly and multi-threaded. It can run up to 10 times faster than its original version in `pcl`.
 
