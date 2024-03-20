@@ -11,6 +11,16 @@ ROS Packages for Real-Time 3D LIDAR Based Simultaneous Localization and Mapping 
 **NDT Matching (Localization):** A search problem where we have to find a transform that maximizes NDT sum to match the different point clouds, a variety of minimization functions can be used for a dual of this problem. Newton nonlinear optimizer is used to find the best 6-DOF pose.
 
 ## Dependencies
+***ndt_slam*** requires the following libraries:
+- PCL
+- OpenMP
+
+***ndt_slam*** requires the following ROS packages:
+- pcl_ros
+- [ndt_omp](https://github.com/koide3/ndt_omp)
+- tf2_sensor_msgs
+- jsk_rviz_plugins
+
 ```bash
 sudo apt install ros-$ROS_DISTRO-tf2-sensor-msgs
 sudo apt install ros-$ROS_DISTRO-jsk-rviz-plugins
