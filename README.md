@@ -2,6 +2,8 @@
 
 ROS Packages for Real-Time 3D LIDAR Based Simultaneous Localization and Mapping (SLAM) using Normal Distribution Transform (NDT) Scan Matching Algorithm.
 
+![3D-LIDAR-SLAM](3D-LIDAR-SLAM.png)
+
 ## Dependencies
 ```bash
 sudo apt install ros-$ROS_DISTRO-tf2-sensor-msgs
